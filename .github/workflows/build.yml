@@ -1,0 +1,29 @@
+name: Official firmware build
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build tools
+        run: python -m pip install ufbt pillow
+      - name: Native tests with sanitizers
+        run: python tools/test.py --sanitize
+      - name: Official release SDK
+        run: ufbt update --channel=release
+      - name: Build and check FAP
+        run: ufbt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: USB-PurpleCheck-official-release
+          path: dist/usb_purplecheck.fap
+          if-no-files-found: error
