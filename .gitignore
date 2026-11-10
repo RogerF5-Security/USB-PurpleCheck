@@ -1,0 +1,8 @@
+.build*/
+.work/
+.vscode/
+legacy/
+__pycache__/
+*.pyc
+evidence/
+dist/

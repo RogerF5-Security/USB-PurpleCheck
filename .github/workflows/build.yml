@@ -1,0 +1,51 @@
+name: Official firmware build
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build tools
+        run: python -m pip install ufbt pillow
+      - name: Native tests with sanitizers
+        run: python tools/test.py --sanitize
+      - name: Official release SDK
+        run: ufbt update --channel=release
+      - name: Build and check FAP
+        run: ufbt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: USB-PurpleCheck-official-release
+          path: dist/usb_purplecheck.fap
+          if-no-files-found: error
+      - name: Check out catalog validation tools
+        uses: actions/checkout@v4
+        with:
+          repository: flipperdevices/flipper-application-catalog
+          ref: a1f974cb907b49ffd6d02e78b02859ae8d9cebe8
+          path: .work/catalog
+      - name: Install catalog requirements
+        run: python -m pip install -r .work/catalog/tools/requirements.txt
+      - name: Generate immutable submission manifest
+        env:
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: python tools/catalog_manifest.py --commit "$SOURCE_COMMIT" --output .work/catalog/applications/USB/usb_purplecheck/manifest.yml
+      - name: Validate catalog bundle
+        working-directory: .work/catalog
+        run: python tools/bundle.py --nolint applications/USB/usb_purplecheck/manifest.yml "$GITHUB_WORKSPACE/dist/catalog-bundle.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: USB-PurpleCheck-catalog-submission
+          path: |
+            .work/catalog/applications/USB/usb_purplecheck/manifest.yml
+            dist/catalog-bundle.zip
+          if-no-files-found: error
