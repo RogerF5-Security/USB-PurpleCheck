@@ -1,25 +1,24 @@
-# Validation - 2026-11-10
+# Validation - 2026-11-10 - candidate 0.3
 
-## 0.3 development candidate
+## Build and native checks
 
-- Native C tests pass: settings defaults/CRC and invalid-value fallback, all translation entries, Ukrainian bitmap coverage, synthetic return matching/mismatch/session binding, FAT12 geometry, separated observations and SCSI write protection/capacity/bounds. Misaligned writes are rejected before calling the storage backend.
-- Compiled and linked with Momentum MNTM-012 SDK, f7 API 87.1; APPCHK passed. This is not an official-release compatibility claim.
-- Official-release CI and the new on-device UI checks are being prepared; no completion is claimed in this snapshot.
-- Hardware acceptance remains pending for actual HID text reception, MSC mount/read/write/return, repeated profile switching, cancellation and timeout under active host I/O. Endpoint policy findings additionally require an independently documented baseline and enforcement evidence.
+- Momentum MNTM-012, target f7 API 87.1: compile/link and uFBT APPCHK passed locally.
+- Official release 1.5.1, target f7 API 88.2: compile/link, APPCHK and native AddressSanitizer/UndefinedBehaviorSanitizer tests passed in [the source PR workflow](https://github.com/RogerF5-Security/USB-PurpleCheck/pull/1/checks). The workflow also validates the catalog bundle for the source commit it reports.
+- Native checks cover settings defaults, CRC and invalid values; translation presence; Ukrainian glyph coverage; FAT12 geometry; exact synthetic return/session binding and altered content; malformed FAT loops, read failures and out-of-volume clusters; separated observations; SCSI write protection, capacities, command length limits and rejection of misaligned writes before backend invocation.
 
-## 0.2 hardware observations retained for provenance
+## Physical-device observations
 
-## Completed
-- Compiled and linked with the installed Momentum MNTM-012 SDK, target f7, API 87.1. uFBT APPCHK passed.
-- Uploaded over the existing FAP at /ext/apps/USB/usb_purplecheck.fap. qFlipper logs visibly reported Storage Write SUCCESS.
-- Launched on the connected physical Flipper through qFlipper remote control. The display visibly showed PurpleCheck 0.2 and the three Spanish menu entries: Teclado USB, Disco lectura/escrit., Disco solo lectura.
-- Native C tests passed for FAT12 geometry, exact token/ACK validation, SCSI write-protection, capacity responses and CDB length limits.
-- Nine additional native observation assertions passed: no response, HID configured, HID marker submitted, disk read, disk write, read-only read, unexpected read-only write and I/O errors remain distinct. No observation state automatically claims an endpoint-policy block.
+- Uploaded the FAP to /ext/apps/USB/usb_purplecheck.fap with qFlipper and launched it on the attached Flipper Zero running Momentum MNTM-012.
+- Visually verified the banner, English default menu, settings, live Spanish/Ukrainian language switching and Created by RogerF5/version rows. SD save confirmation was visible. Six unedited qFlipper PNG exports are in screenshots; their 512x256 geometry and exact orange/black palette are checked.
+- Started the real read/write storage profile through its eight-second preparation screen, then closed qFlipper to release its USB lock. Windows briefly displayed a PURPLECHECK volume with PROBE.TXT, README.TXT, RETURN.TXT and SEND.TXT.
+- The endpoint security agent displayed an explicit policy message prohibiting USB storage, and the volume disappeared before a file copy could be completed. This is an operator-observed enforcement event on one endpoint, not an automatic Flipper policy verdict and not proof of a bypass. No host policy or security agent was modified.
+- Following the configured 120-second trial window, the normal CDC serial port was present again. The result screen and manual conclusion were not subsequently verified or saved through remote control because desktop window activation was unavailable. No exact timeout-latency claim is made.
 
-## Pending
-- Actual HID input delivery, physical MSC mount/read/write, repeated profile switching, cancellation, SD persistence/reload and timeout behavior on hardware.
-- Endpoints with independently documented allow/block policies and vendor enforcement evidence.
+## Pending hardware acceptance
 
-No live USB policy verdict is claimed. Starting a profile requires qFlipper/RPC to release the firmware USB lock. All operation after installation uses the physical Flipper; no companion is part of 0.2.
+- A full synthetic SEND-to-PC-to-RETURN round trip on a host that allows storage, followed by an on-device exact-match result and persisted JSONL/last-result inspection.
+- HID marker reception in a focused text field; read-only profile behavior on allowed storage; cancellation under active I/O; repeated profile changes; settings language persistence across restart; and SD error handling.
+- Testing on official firmware hardware. A passing official build is not a physical test on that firmware.
+- Endpoint policy findings require a documented allowed baseline and host enforcement evidence. Block reads can be metadata/indexing. Device-side write protection is not evidence of host-side write blocking. No response remains inconclusive.
 
-The earlier PowerShell receiver is not part of this standalone release. Its signing error is no longer in the user flow.
+The earlier 0.2 on-device menu and native tests passed before this revision. Its desktop receiver was removed from the standalone distribution; no PowerShell execution-policy change is part of the app flow. Old JSONL evidence is retained locally, while last.bin uses a new validated 0.3 record format.

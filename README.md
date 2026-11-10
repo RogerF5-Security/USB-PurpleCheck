@@ -16,7 +16,7 @@ Default language is English. Settings also offer Spanish and Ukrainian, using or
 
 1. Install `dist/usb_purplecheck.fap` in `/ext/apps/USB/` with qFlipper. Use a build matching your firmware's API.
 2. Close qFlipper and other USB/RPC clients. Open **Apps > USB > USB PurpleCheck** on the physical device.
-3. Press OK at the banner, select a profile with Up/Down, and press OK. Connect to the PC being assessed.
+3. Press OK at the banner, select a profile with Up/Down, and press OK. An eight-second preparation countdown lets you connect to the PC being assessed and release qFlipper's USB lock. Back cancels preparation.
 4. Watch the timer and observations. Back stops; the configured limit stops automatically. Eject a mounted test volume before stopping.
 5. Select an operator conclusion with Left/Right; OK saves. Up/Down on the result toggles observations and synthetic return results.
 

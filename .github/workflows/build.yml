@@ -27,3 +27,25 @@ jobs:
           name: USB-PurpleCheck-official-release
           path: dist/usb_purplecheck.fap
           if-no-files-found: error
+      - name: Check out catalog validation tools
+        uses: actions/checkout@v4
+        with:
+          repository: flipperdevices/flipper-application-catalog
+          ref: a1f974cb907b49ffd6d02e78b02859ae8d9cebe8
+          path: .work/catalog
+      - name: Install catalog requirements
+        run: python -m pip install -r .work/catalog/tools/requirements.txt
+      - name: Generate immutable submission manifest
+        env:
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: python tools/catalog_manifest.py --commit "$SOURCE_COMMIT" --output .work/catalog/applications/USB/usb_purplecheck/manifest.yml
+      - name: Validate catalog bundle
+        working-directory: .work/catalog
+        run: python tools/bundle.py --nolint applications/USB/usb_purplecheck/manifest.yml "$GITHUB_WORKSPACE/dist/catalog-bundle.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: USB-PurpleCheck-catalog-submission
+          path: |
+            .work/catalog/applications/USB/usb_purplecheck/manifest.yml
+            dist/catalog-bundle.zip
+          if-no-files-found: error

@@ -12,7 +12,7 @@ Standalone USB control assessment utility by RogerF5. All controls, observations
 
 ## Use
 
-Close qFlipper, open the app and press OK. Select a profile and start. For storage transfer validation, copy SEND.TXT to the PC and return it as RETURN.TXT, then safely eject before stopping. For keyboard validation, focus a text editor and press OK again on the Flipper. Right opens Settings; Left opens help from the menu.
+Close qFlipper, open the app and press OK. Select a profile and start; an eight-second preparation countdown precedes USB takeover. For storage transfer validation, copy SEND.TXT to the PC and return it as RETURN.TXT, then safely eject before stopping. For keyboard validation, focus a text editor and press OK again on the Flipper. Right opens Settings; Left opens help from the menu.
 
 ## Result limits
 

@@ -5,7 +5,7 @@ Herramienta autonoma para Flipper Zero. No requiere scripts ni instalar programa
 1. Instala el FAP compatible con tu firmware en `/ext/apps/USB/` usando qFlipper.
 2. Cierra qFlipper y abre la app en el Flipper. OK pasa del banner al menu.
 3. Derecha abre Settings. En Language cambia EN a ES o UK con OK. Back guarda.
-4. Elige disco lectura/escritura, disco solo lectura o teclado. OK inicia y Back detiene. Limite configurable: 30, 60 o 120 segundos.
+4. Elige disco lectura/escritura, disco solo lectura o teclado. OK prepara una cuenta regresiva de ocho segundos para conectar la PC y cerrar qFlipper. Back cancela o detiene. Limite configurable: 30, 60 o 120 segundos.
 5. Para teclado, enfoca un editor de texto en la PC y pulsa OK adicional en el Flipper: escribe solo un identificador, sin Enter ni comandos.
 6. Para archivos, copia SEND.TXT a una carpeta temporal de la PC y devuelvelo al disco como RETURN.TXT, reemplazando el archivo vacio. Expulsa el volumen antes de detener. El Flipper verifica automaticamente los 4 KB sinteticos devueltos.
 7. Arriba/Abajo en resultados alterna el resultado de integridad. Izquierda/Derecha elige una conclusion manual; OK guarda en la SD.

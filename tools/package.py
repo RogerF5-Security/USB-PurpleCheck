@@ -10,7 +10,7 @@ meta = json.loads((root / "dist/BUILD.json").read_text())
 assert meta["version"] == "0.3"
 assert meta["sha256"] == hashlib.sha256(binary.read_bytes()).hexdigest()
 files = [root / n for n in ("application.fam", "README.md", "LEEME-PRIMERO.md",
-                            "LICENSE", "THIRD_PARTY_NOTICES.md", ".gitignore")]
+                            "LICENSE", "THIRD_PARTY_NOTICES.md", ".gitignore", ".clang-format")]
 for folder in ("src", "vendor", "assets", "tests", "docs", "tools",
                "screenshots", "catalog", ".github"):
     files.extend(p for p in (root / folder).rglob("*") if p.is_file()
